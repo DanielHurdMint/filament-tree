@@ -29,6 +29,9 @@ class Tree extends Widget implements HasTree, HasForms
 
     protected static int $maxDepth = 2;
 
+    public $treeRecords = [];
+    public $expandedIds = [];
+
     public static function getMaxDepth(): int
     {
         return static::$maxDepth;
@@ -195,7 +198,7 @@ class Tree extends Widget implements HasTree, HasForms
 
         $this->{$hook}();
     }
-    
+
     public function makeTranslatableContentDriver(): ?TranslatableContentDriver
     {
         return null;

@@ -72,8 +72,7 @@
                 }
                 var target = $(e.currentTarget),
                     action = target.data('action'),
-                    item = target.parent(list.options.itemNodeName);
-
+                    item = target.closest(list.options.itemNodeName);
                 if (action === 'collapse') {
                     list.collapseItem(item);
                 }
@@ -188,17 +187,19 @@
 
         expandItem: function (li) {
             li.removeClass(this.options.collapsedClass);
-            li.children('[data-action="expand"]').hide();
-            li.children('[data-action="collapse"]').show();
+            const buttonContainer = li.children('div.dd-handle').children('div.dd-content').children('div.dd-item-btns');
+            buttonContainer.children('[data-action="expand"]').hide();
+            buttonContainer.children('[data-action="collapse"]').show();
             li.children(this.options.listNodeName).show();
         },
 
         collapseItem: function (li) {
-            var lists = li.children(this.options.listNodeName);
+            var lists = li.find(this.options.listNodeName);
             if (lists.length) {
                 li.addClass(this.options.collapsedClass);
-                li.children('[data-action="collapse"]').hide();
-                li.children('[data-action="expand"]').show();
+                const buttonContainer = li.children('div.dd-handle').children('div.dd-content').children('div.dd-item-btns');
+                buttonContainer.children('[data-action="collapse"]').hide();
+                buttonContainer.children('[data-action="expand"]').show();
                 li.children(this.options.listNodeName).hide();
             }
         },

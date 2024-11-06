@@ -21,6 +21,9 @@ class Tree extends ViewComponent
 
     protected array $actions = [];
 
+    public $treeRecords = [];
+    public $expandedIds = [];
+
     public const LOADING_TARGETS = ['activeLocale'];
 
     public function __construct(HasTree $livewire)
@@ -85,5 +88,32 @@ class Tree extends ViewComponent
     public function getMountedActionForm(): ?ComponentContainer
     {
         return $this->getLivewire()->getMountedTreeActionForm();
+    }
+
+    public function loadChildren($parentId)
+    {
+        $record = $this->getLivewire()->getModel()::find($parentId);
+
+        if (!$record) {
+            return [];
+        }
+
+        // Load children with count of their children
+        $record->load(['children' => function ($query) {
+            $query->withCount('children')->ordered();
+        }]);
+
+        $treeRecords = $this->getLivewire()->treeRecords;
+        $treeRecords[$parentId] = $record->children;
+        $this->getLivewire()->treeRecords = $treeRecords;
+        $this->treeRecords = $treeRecords;
+    }
+
+    public function expand($id)
+    {
+        $expandedIds = $this->getLivewire()->expandedIds;
+        $expandedIds[$id] = $id;
+        $this->getLivewire()->expandedIds = $expandedIds;
+        $this->expandedIds = $expandedIds;
     }
 }

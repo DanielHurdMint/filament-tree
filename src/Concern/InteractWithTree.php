@@ -33,7 +33,7 @@ trait InteractWithTree
 
         $this->cacheTreeActions();
         $this->cacheTreeEmptyStateActions();
-        
+
         $this->tree->actions(array_values($this->getCachedTreeActions()));
 
         if ($this->hasMounted) {
@@ -148,5 +148,15 @@ trait InteractWithTree
                 $this->unnestArray($result, $item['children'], $key);
             }
         }
+    }
+
+    public function loadChildren($parentId)
+    {
+        return $this->getCachedTree()->loadChildren($parentId);
+    }
+
+    public function expand($id)
+    {
+        return $this->getCachedTree()->expand($id);
     }
 }

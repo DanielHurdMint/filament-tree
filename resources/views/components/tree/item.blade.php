@@ -1,7 +1,7 @@
 @php use Illuminate\Database\Eloquent\Model; @endphp
 @php use Filament\Facades\Filament; @endphp
 @php use SolutionForest\FilamentTree\Components\Tree; @endphp
-@props(['record', 'containerKey', 'tree', 'title' => null, 'icon' => null])
+@props(['record', 'containerKey', 'tree', 'title' => null, 'icon' => null, 'hasChildren' => false, 'isLoaded' => false, 'parentIds' => null])
 @php
     /** @var $record Model */
     /** @var $containerKey string */
@@ -9,14 +9,28 @@
 
     $recordKey = $tree->getRecordKey($record);
     $parentKey = $tree->getParentKey($record);
-
-    $children = $record->children;
     $collapsed = $this->getNodeCollapsedState($record);
-
     $actions = $tree->getActions();
 @endphp
 
-<li class="filament-tree-row dd-item" data-id="{{ $recordKey }}">
+<li class="filament-tree-row dd-item"
+    data-id="{{ $recordKey }}"
+    wire:key="tree-item-{{ $recordKey }}"
+    x-data="{
+        isLoading: false,
+        isLoaded: {{ $isLoaded ? 'true' : 'false' }},
+        hasChildren: {{ $hasChildren ? 'true' : 'false' }},
+
+        async loadChildren() {
+            if (this.isLoaded || this.isLoading) return;
+
+            this.isLoading = true;
+            await @this.loadChildren('{{ $recordKey }}')
+            this.isLoaded = true;
+            this.isLoading = false;
+        }
+    }"
+>
     <div wire:loading.remove.delay
         wire:target="{{ implode(',', Tree::LOADING_TARGETS) }}"
         @class([
@@ -49,14 +63,20 @@
                 {{ $title }}
             </span>
 
-            <div @class(['dd-item-btns', 'hidden' => !count($children), 'flex items-center justify-center pl-3'])>
-                <button data-action="expand" @class(['hidden' => !$collapsed])>
-                    <x-heroicon-o-chevron-down class="text-gray-400 w-4 h-4" />
-                </button>
-                <button data-action="collapse" @class(['hidden' => $collapsed])>
-                    <x-heroicon-o-chevron-up class="text-gray-400 w-4 h-4" />
-                </button>
-            </div>
+            @if ($hasChildren)
+                <div @class(['dd-item-btns', 'flex items-center justify-center pl-3'])>
+                    <button
+                        data-action="expand"
+                        @class(['hidden' => !$collapsed])
+                        @click="loadChildren"
+                    >
+                        <x-heroicon-o-chevron-down class="text-gray-400 w-4 h-4" />
+                    </button>
+                    <button data-action="collapse" @class(['hidden' => $collapsed])>
+                        <x-heroicon-o-chevron-up class="text-gray-400 w-4 h-4" />
+                    </button>
+                </div>
+            @endif
         </div>
 
         @if (count($actions))
@@ -65,12 +85,26 @@
             </div>
         @endif
     </div>
-    @if (count($children))
-        <x-filament-tree::tree.list :records="$children" :containerKey="$containerKey" :tree="$tree" :collapsed="$collapsed" />
-    @endif
-    <div class="rounded-lg border border-gray-300 mb-2 w-full px-4 py-4 animate-pulse hidden"
-         wire:loading.class.remove.delay="hidden"
-         wire:target="{{ implode(',', Tree::LOADING_TARGETS) }}">
-        <div class="h-4 bg-gray-300 rounded-md"></div>
+
+    <div x-show="isLoading" class="ml-8 my-2">
+        <x-filament::loading-indicator class="h-4 w-4"/>
     </div>
+
+    @if ($hasChildren)
+        <div wire:loading.remove wire:target="loadChildren">
+            <div x-show="isLoaded">
+                @if(!$isLoaded)
+                    <div wire:ignore></div>
+                @else
+                    <x-filament-tree::tree.list
+                        :records="$record->children"
+                        :containerKey="$containerKey"
+                        :tree="$tree"
+                        :collapsed="null"
+                        :parent-id="$recordKey"
+                    />
+                @endif
+            </div>
+        </div>
+    @endif
 </li>
