@@ -18,7 +18,6 @@
             // Custom expand/collapse buttons
             $('#{{ $containerKey }} .dd-item-btns [data-action=expand]').on('click', function (el) {
                 let list = $(this).closest('li');
-                @this.expand(list.data('id'));
                 if (list.length) {
                     $(this).addClass('hidden');
                     $(this).parent().children('.dd-item-btns [data-action=collapse]').removeClass('hidden');

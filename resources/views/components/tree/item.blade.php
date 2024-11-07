@@ -67,12 +67,12 @@
                 <div @class(['dd-item-btns', 'flex items-center justify-center pl-3'])>
                     <button
                         data-action="expand"
-                        @class(['hidden' => !$collapsed])
+                        @class(['hidden' => array_key_exists($recordKey, $tree->expandedIds)])
                         @click="loadChildren"
                     >
                         <x-heroicon-o-chevron-down class="text-gray-400 w-4 h-4" />
                     </button>
-                    <button data-action="collapse" @class(['hidden' => $collapsed])>
+                    <button data-action="collapse" @class(['hidden' => !array_key_exists($recordKey, $tree->expandedIds)])>
                         <x-heroicon-o-chevron-up class="text-gray-400 w-4 h-4" />
                     </button>
                 </div>
@@ -100,7 +100,7 @@
                         :records="$record->children"
                         :containerKey="$containerKey"
                         :tree="$tree"
-                        :collapsed="null"
+                        :collapsed="array_key_exists($recordKey, $tree->expandedIds) ? false : true"
                         :parent-id="$recordKey"
                     />
                 @endif

@@ -24,7 +24,7 @@ class Tree extends ViewComponent
     public $treeRecords = [];
     public $expandedIds = [];
 
-    public const LOADING_TARGETS = ['activeLocale'];
+    public const LOADING_TARGETS = ['activeLocale', 'expand'];
 
     public function __construct(HasTree $livewire)
     {
@@ -107,12 +107,21 @@ class Tree extends ViewComponent
         $treeRecords[$parentId] = $record->children;
         $this->getLivewire()->treeRecords = $treeRecords;
         $this->treeRecords = $treeRecords;
+
+        $expandedIds = $this->getLivewire()->expandedIds;
+        $expandedIds[$parentId] = $parentId;
+        $this->getLivewire()->expandedIds = $expandedIds;
+        $this->expandedIds = $expandedIds;
     }
 
     public function expand($id)
     {
         $expandedIds = $this->getLivewire()->expandedIds;
-        $expandedIds[$id] = $id;
+        if (!array_key_exists($id, $expandedIds)) {
+            $expandedIds[$id] = $id;
+        } else {
+            unset($expandedIds[$id]);
+        }
         $this->getLivewire()->expandedIds = $expandedIds;
         $this->expandedIds = $expandedIds;
     }
