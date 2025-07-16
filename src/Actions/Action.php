@@ -5,15 +5,12 @@ namespace SolutionForest\FilamentTree\Actions;
 
 use Filament\Actions\Concerns\HasMountableArguments;
 use Filament\Actions\Concerns\InteractsWithRecord;
-use Filament\Actions\Contracts\Groupable;
-use Filament\Actions\Contracts\HasRecord;
 use Filament\Actions\Action as BaseAction;
-use Filament\Actions\StaticAction;
 use Illuminate\Database\Eloquent\Model;
 use SolutionForest\FilamentTree\Concern\Actions\HasTree;
 use SolutionForest\FilamentTree\Concern\BelongsToTree;
 
-class Action extends BaseAction implements Groupable, HasRecord, HasTree
+class Action extends BaseAction implements HasTree
 {
     use BelongsToTree;
     use HasMountableArguments;
@@ -108,7 +105,7 @@ class Action extends BaseAction implements Groupable, HasRecord, HasTree
         return $this->getCustomModel() ?? $this->getLivewire()->getModel();
     }
 
-    public function prepareModalAction(StaticAction $action): StaticAction
+    public function prepareModalAction(BaseAction $action): BaseAction
     {
         $action = parent::prepareModalAction($action);
 

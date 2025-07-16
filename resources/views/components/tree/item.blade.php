@@ -28,7 +28,7 @@
 
         <button type="button" @class([
             'h-full flex items-center',
-            'rounded-l-lg border-r rtl:rounded-l rtl:border-r-0 rtl:border-l px-px',
+            'rounded-l-lg border-r rtl:rounded-l-sm rtl:border-r-0 rtl:border-l px-px',
             'bg-gray-50 border-gray-300 dark:bg-white/5 dark:border-white/10',
         ])>
             <x-heroicon-m-ellipsis-vertical class="text-gray-400 dark:text-gray-500 w-4 h-4 -mr-2 rtl:mr-0 rtl:-ml-2"/>
@@ -37,7 +37,7 @@
 
         <div class="dd-content dd-nodrag flex gap-1">
 
-            <x-filament-tree::tree.item-display 
+            <x-filament-tree::tree.item-display
                 class="ml-1 rtl:mr-1"
                 :record="$record" :title="$title" :icon="$icon" :description="$description"
             />

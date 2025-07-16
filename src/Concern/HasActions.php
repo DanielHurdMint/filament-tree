@@ -3,7 +3,6 @@
 namespace SolutionForest\FilamentTree\Concern;
 
 use Closure;
-use Filament\Forms\Form;
 use Filament\Support\Exceptions\Cancel;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +10,7 @@ use SolutionForest\FilamentTree\Actions\Action;
 use SolutionForest\FilamentTree\Actions\ActionGroup;
 
 /**
- * @property Form $mountedTreeActionForm
+ * @property \Filament\Schemas\Schema $mountedTreeActionForm
  */
 trait HasActions
 {

@@ -5,15 +5,15 @@
     :component="$getFieldWrapperView()"
     :field="$field"
 >
-    <div {{ 
+    <div {{
             $attributes
                 ->merge($getExtraAttributes())
                 ->class([
-                    'filament-forms-tree-component py-2 px-5 border rounded-xl shadow-sm',
+                    'filament-forms-tree-component py-2 px-5 border rounded-xl shadow-xs',
                     'bg-white dark:bg-gray-500/10 border-gray-300 dark:border-gray-600',
-                ]) 
+                ])
         }}
-        wire:ignore 
+        wire:ignore
         x-data="{
 
             state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')") }},
@@ -45,7 +45,7 @@
                 // Collapse requesting key if already expanded it before
                 else if (expandedKeys.includes(key)) {
                     this.expanded = expandedKeys.filter(c => c !== key)
-                } 
+                }
                 // Expand requesting key
                 else {
                     this.expanded.push(key);
@@ -87,12 +87,12 @@
                         }
                     }
                 }
-                
+
                 const parentKey = ctn.getAttribute('data-treenode-group');
                 if (parentKey) {
                     const parentCheckbox = $root.querySelector(`.filament-forms-tree-component-option-node[data-treenode='${parentKey}'] input[type=checkbox]`);
 
-                    // Skip set 'Indeterminate' status if parentCheckbox is 'checked' 
+                    // Skip set 'Indeterminate' status if parentCheckbox is 'checked'
                     if (parentCheckbox && parentCheckbox.checked == false)  {
 
                         // All the parent's children.
@@ -146,7 +146,7 @@
 
             init: function () {
 
-                this.$nextTick(() => { 
+                this.$nextTick(() => {
                     this.initCheckboxOptions();
                     this.initAllCheckboxesAreChecked();
                     this.initExpandedState();
@@ -181,7 +181,7 @@
                 color="secondary"
                 label="{{ __('filament-tree::filament-tree.components.tree.buttons.expand_all.label') }}"
                 x-on:click="toggleExpandAll(true)"
-                
+
             />
 
             <x-filament::icon-button
@@ -193,7 +193,7 @@
             />
         </div>
 
-        
+
         <div>
             @foreach($getOptions() as $node)
                 <x-filament-tree::forms.tree.group :node="$node"/>

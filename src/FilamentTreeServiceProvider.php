@@ -2,6 +2,8 @@
 
 namespace SolutionForest\FilamentTree;
 
+use SolutionForest\FilamentTree\Commands\MakeTreePageCommand;
+use SolutionForest\FilamentTree\Commands\MakeTreeWidgetCommand;
 use Filament\Support\Assets\Js;
 use Filament\Support\Assets\Css;
 use Spatie\LaravelPackageTools\Package;
@@ -24,8 +26,8 @@ class FilamentTreeServiceProvider extends PackageServiceProvider
             ->hasAssets()
             ->hasTranslations()
             ->hasCommands([
-                Commands\MakeTreePageCommand::class,
-                Commands\MakeTreeWidgetCommand::class,
+                MakeTreePageCommand::class,
+                MakeTreeWidgetCommand::class,
             ]);
     }
 

@@ -15,7 +15,7 @@
             if (! $action instanceof \SolutionForest\FilamentTree\Actions\Modal\Action) {
                 $action->record($record);
             }
-            
+
             return $action->isVisible();
         },
     );
@@ -36,5 +36,5 @@
         ])
     }}
 >
-    <x-filament-actions::actions :actions="$actions"/>
+    <x-filament::actions :actions="$actions"/>
 </div>
