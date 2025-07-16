@@ -4,14 +4,12 @@
     "scripts": {
         "dev:styles": "npx @tailwindcss/cli -i resources/css/plugin.css -o resources/dist/filament-tree.css --watch",
         "dev:scripts": "node bin/build.js --dev",
-        "build:styles": "npx @tailwindcss/cli -i resources/css/plugin.css -o resources/dist/filament-tree.css --minify && npm run purge",
+        "build:styles": "npx @tailwindcss/cli -i resources/css/plugin.css -o resources/dist/filament-tree.css --minify",
         "build:scripts": "node bin/build.js",
-        "purge": "filament-purge -i resources/dist/filament-tree.css -o resources/dist/filament-tree.css -v 3.x",
         "dev": "npm-run-all --parallel dev:*",
         "build": "npm-run-all build:*"
     },
     "devDependencies": {
-        "@awcodes/filament-plugin-purge": "^1.1.2",
         "@tailwindcss/forms": "^0.5.4",
         "@tailwindcss/typography": "^0.5.9",
         "autoprefixer": "^10.4.21",
